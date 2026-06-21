@@ -1,3 +1,4 @@
+repeat task.wait() until Drawing ~= nil
 local UIS = game:GetService("UserInputService")
 local state = _G.state
 
