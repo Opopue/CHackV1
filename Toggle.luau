@@ -1,3 +1,8 @@
+local RunService = _G.RunService or game:GetService("RunService")
+local UIS = _G.UIS or game:GetService("UserInputService")
+local Camera = _G.Camera or workspace.CurrentCamera
+local Players = _G.Players or game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 local state = _G.state
 local UIS = _G.UIS
 
@@ -57,7 +62,7 @@ end
     end
 end)
 
-_G.RunService.RenderStepped:Connect(function()
+.RunService.RenderStepped:Connect(function()
     local now = tick()
     local delta = now - _G.lastTime
     _G.lastTime = now
