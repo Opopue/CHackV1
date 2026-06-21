@@ -37,7 +37,10 @@ _G.toggle = toggle
 
 UIS.InputBegan:Connect(function(input, gp)
     if input.KeyCode == Enum.KeyCode.RightShift then
-        if _G.panel then _G.panel.Visible = not _G.panel.Visible end
+        task.wait() -- wartet einen Frame bis panel existiert
+        if _G.panel then
+            _G.panel.Visible = not _G.panel.Visible
+        end
         return
     end
     if _G.bindingKey then
