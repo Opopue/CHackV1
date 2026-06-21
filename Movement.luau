@@ -1,6 +1,7 @@
-local UIS = _G.UIS
-local Camera = _G.Camera
-local LocalPlayer = _G.LocalPlayer
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = game:GetService("Players").LocalPlayer
 local state = _G.state
 
 local function startFly()
@@ -16,16 +17,18 @@ local function startFly()
     _G.bodyGyro.MaxTorque = Vector3.new(1e5, 1e5, 1e5)
     _G.bodyGyro.CFrame = root.CFrame
 end
+
 local function stopFly()
     local char = LocalPlayer.Character
     if char then char.Humanoid.PlatformStand = false end
-    if _G.bodyVel then _G.bodyVel:Destroy() end
-    if _G.bodyGyro then _G.bodyGyro:Destroy() end
+    if _G.bodyVel then _G.bodyVel:Destroy() _G.bodyVel = nil end
+    if _G.bodyGyro then _G.bodyGyro:Destroy() _G.bodyGyro = nil end
 end
+
 _G.startFly = startFly
 _G.stopFly = stopFly
 
-_G.RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     if state.fly and _G.bodyVel and _G.bodyGyro then
         local dir = Vector3.zero
         local cf = Camera.CFrame
