@@ -205,4 +205,4 @@ local btnInvis, badgeInvis, strokeInvis, keyInvis = makeBtn("Invisible", secP, "
 local btnAFK, badgeAFK, strokeAFK, keyAFK = makeBtn("Anti-AFK", secP, "antiafk")
 makeDivider()
 local secT = makeSection("TELEPORT")
-local tpNameBox = makeInput("Spielername zum
+local tpNameBox = makeInput("Spielername zum Teleportieren", secT)
