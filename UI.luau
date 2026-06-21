@@ -1,5 +1,6 @@
 repeat task.wait() until Drawing ~= nil
 local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
 local state = _G.state
 
 local gui = Instance.new("ScreenGui", game.CoreGui)
@@ -159,6 +160,9 @@ local function makeBtn(text, parent, stateKey)
         keyBtn.Text = "..."
         keyBtn.TextColor3 = Color3.fromRGB(255, 200, 0)
     end)
+    btn.MouseButton1Click:Connect(function()
+        if _G.toggle then _G.toggle(stateKey) end
+    end)
     return btn, badge, stroke, keyBtn
 end
 
@@ -206,3 +210,85 @@ local btnAFK, badgeAFK, strokeAFK, keyAFK = makeBtn("Anti-AFK", secP, "antiafk")
 makeDivider()
 local secT = makeSection("TELEPORT")
 local tpNameBox = makeInput("Spielername zum Teleportieren", secT)
+local tpBtn = Instance.new("TextButton", secT)
+tpBtn.Size = UDim2.new(1, 0, 0, 28)
+tpBtn.BackgroundColor3 = Color3.fromRGB(40, 10, 80)
+tpBtn.BorderSizePixel = 0
+tpBtn.AutoButtonColor = false
+tpBtn.Text = "Teleport zu Spieler"
+tpBtn.Font = Enum.Font.GothamBold
+tpBtn.TextSize = 11
+tpBtn.TextColor3 = Color3.fromRGB(192, 132, 252)
+Instance.new("UICorner", tpBtn).CornerRadius = UDim.new(0, 7)
+Instance.new("UIStroke", tpBtn).Color = Color3.fromRGB(108, 63, 197)
+local coordBox = makeInput("X,Y,Z (z.B. 0,50,0)", secT)
+local tpCoordsBtn = Instance.new("TextButton", secT)
+tpCoordsBtn.Size = UDim2.new(1, 0, 0, 28)
+tpCoordsBtn.BackgroundColor3 = Color3.fromRGB(40, 10, 80)
+tpCoordsBtn.BorderSizePixel = 0
+tpCoordsBtn.AutoButtonColor = false
+tpCoordsBtn.Text = "Teleport zu Koordinaten"
+tpCoordsBtn.Font = Enum.Font.GothamBold
+tpCoordsBtn.TextSize = 11
+tpCoordsBtn.TextColor3 = Color3.fromRGB(192, 132, 252)
+Instance.new("UICorner", tpCoordsBtn).CornerRadius = UDim.new(0, 7)
+Instance.new("UIStroke", tpCoordsBtn).Color = Color3.fromRGB(108, 63, 197)
+makeDivider()
+local secC = makeSection("CAMERA")
+local btnFreecam, badgeFreecam, strokeFreecam, keyFreecam = makeBtn("Freecam", secC, "freecam")
+
+local hint = Instance.new("TextLabel", panel)
+hint.Size = UDim2.new(1, 0, 0, 24)
+hint.BackgroundTransparency = 1
+hint.Text = "RShift zum Oeffnen  |  Taste druecken zum Belegen"
+hint.Font = Enum.Font.Gotham
+hint.TextSize = 9
+hint.TextColor3 = Color3.fromRGB(90, 58, 122)
+
+_G.badges = {
+    esp = badgeESP, nametags = badgeNames, health = badgeHealth, range = badgeRange,
+    fly = badgeFly, speed = badgeSpeed, noclip = badgeNoclip,
+    god = badgeGod, infjump = badgeJump, antiafk = badgeAFK,
+    fps = badgeFPS, freecam = badgeFreecam, invisible = badgeInvis
+}
+_G.strokes = {
+    esp = strokeESP, nametags = strokeNames, health = strokeHealth, range = strokeRange,
+    fly = strokeFly, speed = strokeSpeed, noclip = strokeNoclip,
+    god = strokeGod, infjump = strokeJump, antiafk = strokeAFK,
+    fps = strokeFPS, freecam = strokeFreecam, invisible = strokeInvis
+}
+_G.keyBtns = {
+    esp = keyESP, nametags = keyNames, health = keyHealth, range = keyRange,
+    fly = keyFly, speed = keySpeed, noclip = keyNoclip,
+    god = keyGod, infjump = keyJump, antiafk = keyAFK,
+    fps = keyFPSBtn, freecam = keyFreecam, invisible = keyInvis
+}
+
+tpBtn.MouseButton1Click:Connect(function()
+    local name = tpNameBox.Text:lower()
+    for _, p in pairs(Players:GetPlayers()) do
+        if p.Name:lower() == name or p.DisplayName:lower() == name then
+            if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+                local char = Players.LocalPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    char.HumanoidRootPart.CFrame = p.Character.HumanoidRootPart.CFrame * CFrame.new(3, 0, 0)
+                end
+            end
+        end
+    end
+end)
+
+tpCoordsBtn.MouseButton1Click:Connect(function()
+    local txt = coordBox.Text
+    local x, y, z = txt:match("(-?%d+%.?%d*),(-?%d+%.?%d*),(-?%d+%.?%d*)")
+    if x and y and z then
+        local char = Players.LocalPlayer.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            char.HumanoidRootPart.CFrame = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
+        end
+    end
+end)
+
+flySpeedBox.FocusLost:Connect(function()
+    _G.flySpeed = tonumber(flySpeedBox.Text) or _G.flySpeed
+end)
