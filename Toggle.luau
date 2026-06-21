@@ -1,14 +1,12 @@
-local RunService = _G.RunService or game:GetService("RunService")
-local UIS = _G.UIS or game:GetService("UserInputService")
-local Camera = _G.Camera or workspace.CurrentCamera
-local Players = _G.Players or game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
 local state = _G.state
-local UIS = _G.UIS
 
 local function toggle(key)
     state[key] = not state[key]
-    _G.setOn(_G.badges[key], _G.strokes[key], state[key])
+    if _G.badges[key] and _G.strokes[key] then
+        _G.setOn(_G.badges[key], _G.strokes[key], state[key])
+    end
     if key == "fly" then
         if state.fly then _G.startFly() else _G.stopFly() end
     elseif key == "freecam" then
@@ -16,9 +14,9 @@ local function toggle(key)
     elseif key == "invisible" then
         _G.setInvisible(state.invisible)
     elseif key == "fps" then
-        _G.fpsLabel.Visible = state.fps
+        if _G.fpsLabel then _G.fpsLabel.Visible = state.fps end
     elseif key == "god" then
-        local char = _G.LocalPlayer.Character
+        local char = game:GetService("Players").LocalPlayer.Character
         if char then
             local hum = char:FindFirstChildOfClass("Humanoid")
             if hum then
@@ -28,10 +26,10 @@ local function toggle(key)
         end
     elseif key == "antiafk" and state.antiafk then
         local vrs = game:GetService("VirtualUser")
-        _G.LocalPlayer.Idled:Connect(function()
-            vrs:Button2Down(Vector2.new(0, 0), _G.Camera.CFrame)
+        game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            vrs:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
             task.wait(0.1)
-            vrs:Button2Up(Vector2.new(0, 0), _G.Camera.CFrame)
+            vrs:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
         end)
     end
 end
@@ -39,11 +37,9 @@ _G.toggle = toggle
 
 UIS.InputBegan:Connect(function(input, gp)
     if input.KeyCode == Enum.KeyCode.RightShift then
-    if _G.panel then
-        _G.panel.Visible = not _G.panel.Visible
+        if _G.panel then _G.panel.Visible = not _G.panel.Visible end
+        return
     end
-    return
-end
     if _G.bindingKey then
         _G.keys[_G.bindingKey] = input.KeyCode
         local kb = _G.keyBtns[_G.bindingKey]
@@ -62,13 +58,11 @@ end
     end
 end)
 
-.RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     local now = tick()
     local delta = now - _G.lastTime
     _G.lastTime = now
     if state.fps and delta > 0 and _G.fpsLabel then
-    _G.fpsLabel.Text = "FPS: " .. math.floor(1 / delta)
+        _G.fpsLabel.Text = "FPS: " .. math.floor(1 / delta)
     end
 end)
-
-print("CHack loaded! RShift to open.")
