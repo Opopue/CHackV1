@@ -1,4 +1,6 @@
-local LocalPlayer = _G.LocalPlayer
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
 local state = _G.state
 
 local function setInvisible(on)
@@ -15,12 +17,12 @@ local function setInvisible(on)
 end
 _G.setInvisible = setInvisible
 
-_G.UIS.JumpRequest:Connect(function()
+UIS.JumpRequest:Connect(function()
     if state.infjump and LocalPlayer.Character then
         LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
     end
 end)
 
-_G.RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     if state.invisible then setInvisible(true) end
 end)
