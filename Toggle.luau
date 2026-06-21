@@ -34,9 +34,11 @@ _G.toggle = toggle
 
 UIS.InputBegan:Connect(function(input, gp)
     if input.KeyCode == Enum.KeyCode.RightShift then
+    if _G.panel then
         _G.panel.Visible = not _G.panel.Visible
-        return
     end
+    return
+end
     if _G.bindingKey then
         _G.keys[_G.bindingKey] = input.KeyCode
         local kb = _G.keyBtns[_G.bindingKey]
