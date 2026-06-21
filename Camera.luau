@@ -1,6 +1,7 @@
-local UIS = _G.UIS
-local Camera = _G.Camera
-local LocalPlayer = _G.LocalPlayer
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = game:GetService("Players").LocalPlayer
 local state = _G.state
 local freecamSpeed = 0.5
 
@@ -33,7 +34,7 @@ end
 _G.startFreecam = startFreecam
 _G.stopFreecam = stopFreecam
 
-_G.RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     if state.freecam and _G.freecamPart then
         local dir = Vector3.zero
         local cf = _G.freecamPart.CFrame
