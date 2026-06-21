@@ -1,3 +1,4 @@
+repeat task.wait() until Drawing ~= nil
 local Players = _G.Players
 local LocalPlayer = _G.LocalPlayer
 local Camera = _G.Camera
