@@ -61,8 +61,8 @@ _G.RunService.RenderStepped:Connect(function()
     local now = tick()
     local delta = now - _G.lastTime
     _G.lastTime = now
-    if state.fps and delta > 0 then
-        _G.fpsLabel.Text = "FPS: " .. math.floor(1 / delta)
+    if state.fps and delta > 0 and _G.fpsLabel then
+    _G.fpsLabel.Text = "FPS: " .. math.floor(1 / delta)
     end
 end)
 
