@@ -1,5 +1,10 @@
 local function load(url)
-    return loadstring(game:HttpGet(url))()
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(url, true))()
+    end)
+    if not success then
+        warn("Fehler beim Laden: " .. url .. " - " .. tostring(result))
+    end
 end
 
 local base = "https://raw.githubusercontent.com/Opopue/CHackV1/main/"
