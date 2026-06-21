@@ -1,9 +1,3 @@
-_G.Players = game:GetService("Players")
-_G.RunService = game:GetService("RunService")
-_G.UIS = game:GetService("UserInputService")
-_G.Camera = workspace.CurrentCamera
-_G.LocalPlayer = _G.Players.LocalPlayer
-
 _G.state = {
     esp = false, nametags = false, health = false, range = false,
     fly = false, speed = false, noclip = false,
