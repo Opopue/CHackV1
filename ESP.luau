@@ -1,9 +1,10 @@
 repeat task.wait() until Drawing ~= nil
-local Players = _G.Players
-local LocalPlayer = _G.LocalPlayer
-local Camera = _G.Camera
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
 local state = _G.state
 local espTable = _G.espTable
+local RunService = game:GetService("RunService")
 
 local function createEntry(p)
     local box = Drawing.new("Square")
@@ -39,7 +40,7 @@ end
 Players.PlayerAdded:Connect(createEntry)
 Players.PlayerRemoving:Connect(removeEntry)
 
-_G.RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     for player, data in pairs(espTable) do
         local box = data.box
         local tag = data.tag
@@ -78,3 +79,44 @@ _G.RunService.RenderStepped:Connect(function()
                         data.hpBar.Size = Vector2.new(4, barH)
                         data.hpBar.Position = Vector2.new(barX, rootPos.Y + h/2 - barH)
                         data.hpBar.Color = Color3.fromRGB(math.floor(255*(1-hpRatio)), math.floor(255*hpRatio), 0)
+                        data.hpBar.Visible = true
+                    else
+                        if data.hpBg then data.hpBg.Visible = false end
+                        if data.hpBar then data.hpBar.Visible = false end
+                    end
+                    if state.range then
+                        if not data.distLabel then
+                            local d = Drawing.new("Text")
+                            d.Size = 12
+                            d.Center = false
+                            d.Outline = true
+                            d.OutlineColor = Color3.fromRGB(0, 0, 0)
+                            d.Color = Color3.fromRGB(220, 220, 220)
+                            data.distLabel = d
+                        end
+                        local lchar = LocalPlayer.Character
+                        local dist = 0
+                        if lchar and lchar:FindFirstChild("HumanoidRootPart") then
+                            dist = math.floor((char.HumanoidRootPart.Position - lchar.HumanoidRootPart.Position).Magnitude)
+                        end
+                        data.distLabel.Text = dist .. " studs"
+                        data.distLabel.Position = Vector2.new(rootPos.X - w/2, rootPos.Y + h/2 + 3)
+                        data.distLabel.Visible = true
+                    else
+                        if data.distLabel then data.distLabel.Visible = false end
+                    end
+                else
+                    box.Visible = false tag.Visible = false
+                    if data.hpBg then data.hpBg.Visible = false end
+                    if data.hpBar then data.hpBar.Visible = false end
+                    if data.distLabel then data.distLabel.Visible = false end
+                end
+            else
+                box.Visible = false tag.Visible = false
+                if data.hpBg then data.hpBg.Visible = false end
+                if data.hpBar then data.hpBar.Visible = false end
+                if data.distLabel then data.distLabel.Visible = false end
+            end
+        end
+    end
+end)
