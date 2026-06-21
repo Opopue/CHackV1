@@ -1,2 +1,21 @@
 # CHackV1
-CHackV1 is a private script for Roblox Executors, covering several functions such as ESP, fly, freecam and so on. Its a basic script for learning purposes
+A basic Roblox script for learning purposes.
+
+## Features
+- ESP Boxen
+- Nametags
+- Healthbar
+- Distance Label
+- Fly
+- Speed Boost
+- No Clip
+- God Mode
+- Infinite Jump
+- Invisible
+- Anti-AFK
+- FPS Counter
+- Freecam
+- Teleport
+
+## Usage
+Paste Main.luau into your executor.
