@@ -1,10 +1,8 @@
-local UIS = _G.UIS
+local UIS = game:GetService("UserInputService")
 local state = _G.state
-local keys = _G.keys
 
 local gui = Instance.new("ScreenGui", game.CoreGui)
 gui.ResetOnSpawn = false
-_G.gui = gui
 
 _G.fpsLabel = Drawing.new("Text")
 _G.fpsLabel.Visible = false
@@ -49,7 +47,7 @@ UIS.InputChanged:Connect(function(input)
         _G.freecamPart.CFrame = CFrame.new(_G.freecamPart.CFrame.Position)
             * CFrame.Angles(0, math.rad(_G.freecamYaw), 0)
             * CFrame.Angles(math.rad(_G.freecamPitch), 0, 0)
-        _G.Camera.CFrame = _G.freecamPart.CFrame
+        workspace.CurrentCamera.CFrame = _G.freecamPart.CFrame
     end
 end)
 
@@ -158,4 +156,52 @@ local function makeBtn(text, parent, stateKey)
     keyBtn.MouseButton1Click:Connect(function()
         _G.bindingKey = stateKey
         keyBtn.Text = "..."
-        keyBtn.TextColor3 = Color3.fromRGB(255,
+        keyBtn.TextColor3 = Color3.fromRGB(255, 200, 0)
+    end)
+    return btn, badge, stroke, keyBtn
+end
+
+local function makeDivider()
+    local d = Instance.new("Frame", panel)
+    d.Size = UDim2.new(1, 0, 0, 1)
+    d.BackgroundColor3 = Color3.fromRGB(30, 16, 48)
+    d.BorderSizePixel = 0
+end
+
+local function makeInput(placeholder, parent)
+    local box = Instance.new("TextBox", parent)
+    box.Size = UDim2.new(1, 0, 0, 26)
+    box.BackgroundColor3 = Color3.fromRGB(18, 9, 31)
+    box.BorderSizePixel = 0
+    box.PlaceholderText = placeholder
+    box.PlaceholderColor3 = Color3.fromRGB(90, 58, 122)
+    box.Text = ""
+    box.Font = Enum.Font.Gotham
+    box.TextSize = 11
+    box.TextColor3 = Color3.fromRGB(192, 132, 252)
+    Instance.new("UICorner", box).CornerRadius = UDim.new(0, 7)
+    Instance.new("UIStroke", box).Color = Color3.fromRGB(59, 31, 110)
+    return box
+end
+
+local secV = makeSection("VISUALS")
+local btnESP, badgeESP, strokeESP, keyESP = makeBtn("ESP Boxen", secV, "esp")
+local btnNames, badgeNames, strokeNames, keyNames = makeBtn("Nametags", secV, "nametags")
+local btnHealth, badgeHealth, strokeHealth, keyHealth = makeBtn("Healthbar", secV, "health")
+local btnRange, badgeRange, strokeRange, keyRange = makeBtn("Distance Label", secV, "range")
+local btnFPS, badgeFPS, strokeFPS, keyFPSBtn = makeBtn("FPS Counter", secV, "fps")
+makeDivider()
+local secM = makeSection("MOVEMENT")
+local btnFly, badgeFly, strokeFly, keyFly = makeBtn("Fly", secM, "fly")
+local flySpeedBox = makeInput("Fly Speed (Standard: 50)", secM)
+local btnSpeed, badgeSpeed, strokeSpeed, keySpeed = makeBtn("Speed Boost", secM, "speed")
+local btnNoclip, badgeNoclip, strokeNoclip, keyNoclip = makeBtn("No Clip", secM, "noclip")
+makeDivider()
+local secP = makeSection("PLAYER")
+local btnGod, badgeGod, strokeGod, keyGod = makeBtn("God Mode", secP, "god")
+local btnJump, badgeJump, strokeJump, keyJump = makeBtn("Infinite Jump", secP, "infjump")
+local btnInvis, badgeInvis, strokeInvis, keyInvis = makeBtn("Invisible", secP, "invisible")
+local btnAFK, badgeAFK, strokeAFK, keyAFK = makeBtn("Anti-AFK", secP, "antiafk")
+makeDivider()
+local secT = makeSection("TELEPORT")
+local tpNameBox = makeInput("Spielername zum
